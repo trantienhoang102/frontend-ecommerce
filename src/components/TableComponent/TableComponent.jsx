@@ -4,7 +4,7 @@ import Loading from '../../components/LoadingComponent/Loading'
 import { Excel } from "antd-table-saveas-excel"
 
 const TableComponent = (props) => {
-  const { selectionType = 'checkbox', data: dataSource = [], isLoading = false, columns = [], handleDeleteMany } = props
+  const { selectionType = 'checkbox', data: dataSource = [], hasDeleteFunc = true, isLoading = false, columns = [], handleDeleteMany } = props
   const [rowSelectedKeys, setRowSelectedKeys] = useState([])
 
   const newColumnExport = useMemo(() => {
@@ -41,7 +41,7 @@ const TableComponent = (props) => {
 
   return (
     <Loading isLoading={isLoading}>
-      {rowSelectedKeys.length > 0 &&
+      {rowSelectedKeys.length > 0 && hasDeleteFunc &&
         (
           <div style={{
             background: '#1d1ddd',

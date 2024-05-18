@@ -23,8 +23,7 @@ const PaymentPage = () => {
   const order = useSelector((state) => state.order)
   const user = useSelector((state) => state.user)
   const location = useLocation()
-  const { state } = location
-  console.log("why", location)
+  const state = location.state
 
 
 
@@ -108,7 +107,7 @@ const PaymentPage = () => {
     mutationAddOrder.mutate(
       {
         token: user?.access_token,
-        orderItems: order?.orderItemsSlected,
+        orderItems: state?.orderItems,
         fullName: user?.name,
         address: user?.address,
         phone: user?.phone,
@@ -166,7 +165,7 @@ const PaymentPage = () => {
         state: {
           delivery,
           payment,
-          orders: state?.orders,
+          orders: state?.orderItems,
           totalPriceMemo: order?.totalPrice
         }
       })
@@ -190,7 +189,7 @@ const PaymentPage = () => {
     mutationAddOrder.mutate(
       {
         token: user?.access_token,
-        orderItems: order?.orderItemsSlected,
+        orderItems: state?.orderItems,
         fullName: user?.name,
         address: user?.address,
         phone: user?.phone,
@@ -275,7 +274,7 @@ const PaymentPage = () => {
                   <Lable>Chọn phương thức thanh toán</Lable>
                   <WrapperRadio onChange={handlePayment} value={payment}>
                     <Radio value="later_money"> Thanh toán tiền mặt khi nhận hàng</Radio>
-                    <Radio value="paypal"> Thanh toán tiền bằng paypal</Radio>
+                    {/* <Radio value="paypal"> Thanh toán tiền bằng paypal</Radio> */}
                   </WrapperRadio>
                 </div>
               </WrapperInfo>
@@ -333,7 +332,7 @@ const PaymentPage = () => {
                     border: 'none',
                     borderRadius: '4px'
                   }}
-                  textbutton={'Đặt hàng'}
+                  textButton={'Đặt hàng'}
                   styleTextButton={{ color: '#fff', fontSize: '15px', fontWeight: '700' }}
                 ></ButtonComponent>
               )}

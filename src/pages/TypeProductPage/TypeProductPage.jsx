@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react'
 import NavBarComponent from '../../components/NavBarComponent/NavBarComponent'
 import CardComponent from '../../components/CardComponent/CardComponent'
 import { Row, Col, Pagination } from 'antd'
-import { WrapperNavbar, WrapperProducts } from './style'
+import { WrapperNavbar, WrapperProducts, WrapperTypeProduct } from './style'
 import { useLocation } from 'react-router-dom'
 import * as ProductService from '../../services/ProductService'
 import Loading from '../../components/LoadingComponent/Loading'
 import { useSelector } from 'react-redux'
 import { useDebounce } from '../../hooks/useDebounce'
+import TypeProduct from '../../components/TypeProduct/TypeProduct'
+
 const TypeProductPage = () => {
   const searchProduct = useSelector((state) => state?.product?.search)
   const searchDebounce = useDebounce(searchProduct, 500)
@@ -15,6 +17,22 @@ const TypeProductPage = () => {
   const { state } = useLocation()
   const [products, setProducts] = useState([])
   const [loading, setLoading] = useState(false)
+  const [typeProducts, setTypeProducts] = useState([])
+
+
+  const fetchAllTypeProduct = async () => {
+    const res = await ProductService.getAllTypeProduct()
+    if (res?.status === 'OK') {
+      setTypeProducts(res?.data)
+    }
+  }
+
+
+  useEffect(() => {
+    fetchAllTypeProduct()
+  }, [])
+
+
   const [panigate, setPanigate] = useState({
     page: 0,
     limit: 10,
@@ -46,12 +64,23 @@ const TypeProductPage = () => {
   }
   return (
     <Loading isLoading={loading}>
+      <div style={{ width: '1270px', margin: '0 auto' }}>
+        <WrapperTypeProduct>
+          {
+            typeProducts.map((item) => {
+              return (
+                <TypeProduct name={item} key={item} />
+              )
+            })
+          }
+        </WrapperTypeProduct>
+      </div>
       <div style={{ width: '100%', background: '#efefef', height: 'calc(100vh - 64px)' }}>
         <div style={{ width: '1270px', margin: '0 auto', height: '100%' }}>
           <Row style={{ flexWrap: 'nowrap', paddingTop: '10px', height: 'calc(100% - 20px)' }}>
-            <WrapperNavbar span={4}>
+            {/* <WrapperNavbar span={4}>
               <NavBarComponent />
-            </WrapperNavbar>
+            </WrapperNavbar> */}
             <Col span={20} style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
               <WrapperProducts>
                 {

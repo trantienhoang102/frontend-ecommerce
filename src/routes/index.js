@@ -10,6 +10,8 @@ import ProfilePage from "../pages/Profile/ProfilePage";
 import AdminPage from "../pages/AdminPage/AdminPage";
 import PaymentPage from "../pages/PaymentPage/PaymentPage";
 import OrderSuccess from "../pages/OrderSuccess/OrderSuccess";
+import MyOrder from "../pages/MyOrder/MyOrder";
+import DetailsOrderPage from "../pages/DetailsOrderPage/DetailsOrderPage";
 
 
 
@@ -22,6 +24,16 @@ export const routes = [
     {
         path: '/order',
         page: OrderPage,
+        isShowHeader: true
+    },
+    {
+        path: '/my-order',
+        page: MyOrder,
+        isShowHeader: true
+    },
+    {
+        path: '/details-order/:id',
+        page: DetailsOrderPage,
         isShowHeader: true
     },
     {

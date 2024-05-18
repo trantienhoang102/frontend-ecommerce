@@ -17,24 +17,29 @@ const CardComponent = (props) => {
     <WrapperCardStyle
       hoverable
       headstyle={{ width: '200px', height: '200px' }}
-      style={{ width: 200 }}
+      style={{ width: 200, cursor: countInStock !== 0 ? 'pointer' : 'not-allowed', backgroundColor: countInStock !== 0 ? '#fff' : '#ccc', }}
       bodyStyles={{ padding: '10px' }}
       cover={<img alt="example" src={image} />}
       onClick={() => handleDetailsProduct(id)}
+    // disabled={countInStock === 0}
+
     >
       <img
+
         src={logo}
         style={{
           width: '68px', height: '14px', position: 'absolute', top: -1, left: -1,
-          borderTopLeftRadius: '3px'
+          borderTopLeftRadius: '3px',
         }}
-      />
+      >
+      </img>
+
       <StyleNameProduct>{name}</StyleNameProduct>
       <WrapperReportText>
         <span style={{ marginRight: '4px' }}>
           <span>{rating}</span> <StarFilled style={{ fontSize: '12px', color: 'yellow' }} />
         </span>
-        <span> | {selled || 1000}</span>
+        <span> | {selled} Đã bán</span>
       </WrapperReportText>
       <WrapperPriceText>
         <span style={{ marginRight: '8px' }}>

@@ -485,11 +485,27 @@ const AdminProduct = () => {
     })
   }
 
+  const handleOpenAddProductModal = () => {
+    setStateProduct({
+      name: '',
+      price: '',
+      description: '',
+      rating: '',
+      image: '',
+      type: '',
+      countInStock: '',
+      discount: '',
+    })
+    setIsModalOpen(true)
+    form.resetFields()
+
+  }
+
   return (
     <div>
       <WrapperHeader>Quản lý sản phẩm</WrapperHeader>
       <div style={{ marginTop: '10px' }}>
-        <Button style={{ height: '150px', width: '150px', borderRadius: '6px', borderStyle: 'dashed' }} onClick={() => setIsModalOpen(true)}><PlusOutlined style={{ fontSize: '60px' }} /></Button>
+        <Button style={{ height: '150px', width: '150px', borderRadius: '6px', borderStyle: 'dashed' }} onClick={() => { handleOpenAddProductModal() }}><PlusOutlined style={{ fontSize: '60px' }} /></Button>
       </div>
       <div style={{ marginTop: '20px' }}>
         <TableComponent handleDeleteMany={handleDeleteManyProducts} columns={columns} isLoading={isLoadingProducts} data={dataTable} onRow={(record, rowIndex) => {

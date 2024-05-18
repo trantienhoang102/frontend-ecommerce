@@ -37,7 +37,7 @@ const OrderSucess = () => {
                                 </div>
                             </WrapperInfo>
                             <WrapperItemOrderInfo>
-                                {order?.orderItemsSelected?.map((order) => {
+                                {state?.orders?.map((order) => {
                                     return (
                                         <WrapperItemOrder key={order?.name}>
                                             <div style={{ width: '500px', display: 'flex', alignItems: 'center', gap: 4 }}>

@@ -23,8 +23,7 @@ const OrderPage = () => {
 
   const order = useSelector((state) => state.order)
   const user = useSelector((state) => state.user)
-  console.log("orderpageorder", order.totalPrice)
-  console.log("orders ne: ~~~", order?.orderItemsSelected)
+
 
 
 
@@ -52,14 +51,17 @@ const OrderPage = () => {
     }
   };
 
-  const handleChangeCount = (type, idProduct) => {
+  const handleChangeCount = (type, idProduct, limited) => {
     if (type === 'increase') {
-      dispatch(increaseAmount({ idProduct }))
+      if (!limited) {
+        dispatch(increaseAmount({ idProduct }))
+      }
+    } else {
+      if (!limited) {
+        dispatch(decreaseAmount({ idProduct }))
+      }
     }
-    else {
-      dispatch(decreaseAmount({ idProduct }))
-    }
-  };
+  }
 
   const handleDeleteOrder = (idProduct) => {
     dispatch(removeOrderProduct({ idProduct }))
@@ -117,16 +119,24 @@ const OrderPage = () => {
   }, [order])
 
   const priceDiscountMemo = useMemo(() => {
-    const result = order?.orderItemsSlected?.reduce((total, cur) => {
-      const totalDiscount = cur.discount ? cur.discount : 0
-      return total + (priceMemo * (totalDiscount * cur.amount) / 100)
-    }, 0)
-    if (Number(result)) {
-      return result
-    }
-    return 0
-  }, [order])
 
+
+    const result = order?.orderItemsSelected?.map((item) => {
+      if (item?.discount)
+        return item.price * item.discount / 100 * item.amount
+      else
+        return 0
+    })
+    if (result != 0) {
+
+      const DiscountPrice = result.reduce((total, num) => {
+        return total + num
+      })
+      return DiscountPrice
+    }
+    else
+      return 0
+  }, [order])
   const deliveryPriceMemo = useMemo(() => {
     if (priceMemo >= 20000 && priceMemo < 500000) {
       return 10000
@@ -138,7 +148,7 @@ const OrderPage = () => {
   }, [priceMemo])
 
   const totalPriceMemo = useMemo(() => {
-    return Number(priceMemo) - Number(priceDiscountMemo) * Number(priceMemo) + Number(deliveryPriceMemo)
+    return Number(priceMemo) - Number(priceDiscountMemo) + Number(deliveryPriceMemo)
   }, [priceMemo, priceDiscountMemo, deliveryPriceMemo])
 
   const handleRemoveAllOrder = () => {
@@ -156,7 +166,6 @@ const OrderPage = () => {
     }
     else {
       dispatch(addOrderTotalPrice({ priceMemo, totalPriceMemo }))
-      console.log("order?.orderItemsSlected", order?.orderItemsSelected)
       navigate('/payment', {
         state: {
           orderItems: orderItemsMemo
@@ -256,6 +265,7 @@ const OrderPage = () => {
             <WrapperListOrder>
               {order?.orderItems?.map((order) => {
                 return (
+
                   <WrapperItemOrder >
                     <div style={{ width: '390px', display: 'flex', alignItems: 'center', gap: 4 }}>
                       <CustomCheckbox onChange={onChange} value={order?.product} checked={listChecked.includes(order?.product)}></CustomCheckbox>
@@ -271,12 +281,13 @@ const OrderPage = () => {
                       <span>
                         <span style={{ fontSize: '13px', color: '#242424' }}>{convertPrice(order.price)}</span>
                       </span>
+
                       <WrapperCountOrder>
-                        <button style={{ border: 'none', background: 'transparent', cursor: 'pointer' }} onClick={() => handleChangeCount('decrease', order?.product)}>
+                        <button style={{ border: 'none', background: 'transparent', cursor: 'pointer' }} onClick={() => handleChangeCount('decrease', order?.product, order?.amount === 1)}>
                           <MinusOutlined style={{ color: '#000', fontSize: '10px' }} />
                         </button>
                         <WrapperInputNumber defaultValue={order?.amount} value={order?.amount} size="small" min={1} />
-                        <button style={{ border: 'none', background: 'transparent', cursor: 'pointer' }} onClick={() => handleChangeCount('increase', order?.product)} >
+                        <button style={{ border: 'none', background: 'transparent', cursor: 'pointer' }} onClick={() => handleChangeCount('increase', order?.product, order?.amount === order.countInStock, order?.amount === 1)} >
                           <PlusOutlined style={{ color: '#000', fontSize: '10px' }} />
                         </button>
                       </WrapperCountOrder>
@@ -306,7 +317,7 @@ const OrderPage = () => {
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                   <span>Giảm giá</span>
-                  <span style={{ color: '#000', fontSize: '14px', fontWeight: 'bold' }}>{`${priceDiscountMemo} %`}</span>
+                  <span style={{ color: '#000', fontSize: '14px', fontWeight: 'bold' }}>{convertPrice(priceDiscountMemo)}</span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                   <span>Phí giao hàng</span>
@@ -331,7 +342,7 @@ const OrderPage = () => {
                 border: 'none',
                 borderRadius: '4px'
               }}
-              textbutton={'Mua hàng'}
+              textButton={'Mua hàng'}
               styleTextButton={{ color: '#fff', fontSize: '15px', fontWeight: '700' }}
             ></ButtonComponent>
           </WrapperRight>
@@ -381,7 +392,7 @@ const OrderPage = () => {
         </Loading>
 
       </ModalComponent>
-    </div>
+    </div >
   )
 }
 
