@@ -17,7 +17,7 @@ const CardComponent = (props) => {
     <WrapperCardStyle
       hoverable
       headstyle={{ width: '200px', height: '200px' }}
-      style={{ width: 200, cursor: countInStock !== 0 ? 'pointer' : 'not-allowed', backgroundColor: countInStock !== 0 ? '#fff' : '#ccc', }}
+      style={{ width: 200, cursor: 'pointer', backgroundColor: '#fff' }}
       bodyStyles={{ padding: '10px' }}
       cover={<img alt="example" src={image} />}
       onClick={() => handleDetailsProduct(id)}

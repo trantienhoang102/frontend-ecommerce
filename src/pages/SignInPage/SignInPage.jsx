@@ -23,6 +23,7 @@ const SignInPage = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
+
   const dispatch = useDispatch()
 
   const navigate = useNavigate()
@@ -33,7 +34,7 @@ const SignInPage = () => {
 
   const { data, isLoading, isSuccess } = mutation
   useEffect(() => {
-    if (isSuccess) {
+    if (data?.status == 'OK') {
       if (location?.state) {
         navigate(location?.state)
       }

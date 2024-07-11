@@ -18,6 +18,9 @@ const SignUpPage = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
+  const [errorEmail, setErrorEmail] = useState(false)
+  const [errorPassword, setErrorPassword] = useState(false)
+
 
   const mutation = useMutationHooks(
     data => UserService.signupUser(data)
@@ -50,7 +53,30 @@ const SignUpPage = () => {
   }
 
   const handleSignUp = () => {
-    mutation.mutate({ email, password, confirmPassword })
+    if (!email.match(
+      /([a-zA-Z0-9]+)([\_\.\-{1}])?([a-zA-Z0-9]+)\@([a-zA-Z0-9]+)([\.])([a-zA-Z\.]+)/g
+    ) && password !== confirmPassword) {
+      setErrorEmail(true)
+      setErrorPassword(true)
+    }
+
+    else if (password !== confirmPassword) {
+      setErrorEmail(false)
+      setErrorPassword(true)
+    }
+    else if (!email.match(
+      /([a-zA-Z0-9]+)([\_\.\-{1}])?([a-zA-Z0-9]+)\@([a-zA-Z0-9]+)([\.])([a-zA-Z\.]+)/g
+    )) {
+      setErrorEmail(true)
+      setErrorPassword(false)
+    }
+
+    else {
+      setErrorEmail(false)
+      setErrorPassword(false)
+
+      mutation.mutate({ email, password, confirmPassword })
+    }
 
   }
 
@@ -59,8 +85,9 @@ const SignUpPage = () => {
       <div style={{ width: '800px', height: '445px', borderRadius: '6px', background: '#fff', display: 'flex' }}>
         <WrapperContainerLeft>
           <h1>Xin chào</h1>
-          <p>Đăng nhập vào tạo tài khoản</p>
+          <p>Đăng nhập và tạo tài khoản</p>
           <InputFormComponent style={{ marginBottom: '10px' }} placeholder="abc@gmail.com" value={email} onChange={handleOnchangeEmail} />
+          {errorEmail && <div style={{ color: 'red', size: '18px' }}>Tài khoản phải là địa chỉ email</div>}
           {/* <InputFormComponent placeholder="password" style={{ marginBottom: '10px'}}  />
         <InputFormComponent placeholder="confirm password" /> */}
           <div style={{ position: 'relative' }}>
@@ -101,6 +128,8 @@ const SignUpPage = () => {
             </span>
             <InputFormComponent placeholder="confirm password" type={isShowConfirmPassword ? "text" : "password"} value={confirmPassword} onChange={handleOnchangeConfirmPassword} />
           </div>
+          {errorPassword && <div style={{ color: 'red', size: '18px' }}>Mật khẩu không trùng khớp</div>}
+
           {data?.status === 'ERR' && <span style={{ color: 'red' }}>{data?.message}</span>}
           {/* <Loading isLoading={isPending}> */}
           <ButtonComponent

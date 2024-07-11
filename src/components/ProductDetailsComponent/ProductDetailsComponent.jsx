@@ -2,7 +2,16 @@ import React, { useEffect, useState } from 'react'
 import { Col, Image, Rate, Row } from 'antd'
 import { StarFilled, PlusOutlined, MinusOutlined } from '@ant-design/icons'
 import imageProduct from '../../assets/images/test.webp'
-import imageProductSmall from '../../assets/images/imagesmall.webp'
+import smallimg1 from '../../assets/images/smallimg1.jfif'
+import smallimg2 from '../../assets/images/smallimg2.jfif'
+import smallimg3 from '../../assets/images/smallimg3.jfif'
+import smallimg4 from '../../assets/images/smallimg4.jfif'
+import smallimg5 from '../../assets/images/smallimg5.jfif'
+
+
+
+
+
 import ButtonComponent from '../ButtonComponent/ButtonComponent'
 import * as ProductService from '../../services/ProductService'
 import { useQuery } from '@tanstack/react-query'
@@ -107,21 +116,21 @@ const ProductDetailsComponent = ({ idProduct }) => {
             <Row style={{ padding: '16px', background: '#fff', borderRadius: '4px' }}>
                 <Col span={10} style={{ borderRight: '1px solid #e5e5e5', paddingRight: '8px' }}>
                     <Image src={productDetails?.image} alt="image product" preview={false} />
-                    <Row style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <Row style={{ margin: ' 20px 0px 20px 0px', display: 'flex', justifyContent: 'space-between' }}>
                         <WrapperStyleColImage span={4}>
-                            <WrapperStyleImageSmall src={imageProductSmall} alt="image small" preview={false} />
+                            <WrapperStyleImageSmall src={smallimg1} alt="image small" preview={false} />
                         </WrapperStyleColImage>
                         <WrapperStyleColImage span={4}>
-                            <WrapperStyleImageSmall src={imageProductSmall} alt="image small" preview={false} />
+                            <WrapperStyleImageSmall src={smallimg2} alt="image small" preview={false} />
                         </WrapperStyleColImage>
                         <WrapperStyleColImage span={4}>
-                            <WrapperStyleImageSmall src={imageProductSmall} alt="image small" preview={false} />
+                            <WrapperStyleImageSmall src={smallimg3} alt="image small" preview={false} />
                         </WrapperStyleColImage>
                         <WrapperStyleColImage span={4}>
-                            <WrapperStyleImageSmall src={imageProductSmall} alt="image small" preview={false} />
+                            <WrapperStyleImageSmall src={smallimg4} alt="image small" preview={false} />
                         </WrapperStyleColImage>
                         <WrapperStyleColImage span={4}>
-                            <WrapperStyleImageSmall src={imageProductSmall} alt="image small" preview={false} />
+                            <WrapperStyleImageSmall src={smallimg5} alt="image small" preview={false} />
                         </WrapperStyleColImage>
                     </Row>
                 </Col>
